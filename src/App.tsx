@@ -5,7 +5,12 @@ import { SelectCityComponent } from "./steps/SelectCity.component";
 import { useState } from "react";
 import { Container, Text } from "@chakra-ui/react";
 import { AppForm } from "./logic/interfaces";
-import { SELECT_REGION_INDEX, SELECT_CITY_INDEX } from "./steps/const";
+import {
+  SELECT_REGION_INDEX,
+  SELECT_CITY_INDEX,
+  SELECT_CATEGORY_INDEX,
+} from "./steps/const";
+import { SelectCategoryComponent } from "./steps/SelectCategory.component";
 
 function App() {
   const [guideStep, setGuideStep] = useState(0);
@@ -25,6 +30,7 @@ function App() {
             </Text>
             {guideStep === SELECT_REGION_INDEX && <SelectRegionComponent />}
             {guideStep === SELECT_CITY_INDEX && <SelectCityComponent />}
+            {guideStep === SELECT_CATEGORY_INDEX && <SelectCategoryComponent />}
           </div>
         </Container>
       </FormContext.Provider>
