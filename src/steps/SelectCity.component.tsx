@@ -2,42 +2,42 @@ import { Select, Text, Skeleton, Button } from "@chakra-ui/react";
 import { useEffect, useState, useContext, ChangeEvent } from "react";
 import { GuideStepContext } from "../logic/routing";
 import { API_BASE_URL } from "../const";
-import { trimRegionNamespace } from "../regions/utils";
 import { FormContext } from "../logic/form";
 import { AppForm } from "../logic/interfaces";
+import { trimCityNamespace } from "../cities/utils";
 
-export const SelectRegionComponent = () => {
-  const [regions, setRegions] = useState([]);
+export const SelectCityComponent = () => {
+  const [cities, setCities] = useState([]);
   const { form, setForm } = useContext(FormContext);
   const { setGuideStep } = useContext(GuideStepContext);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/regions`)
+    fetch(`${API_BASE_URL}/regions/${form.region}/cities`)
       .then((r) => r.json())
-      .then(setRegions);
+      .then(setCities);
   }, []);
 
   const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setForm((prevForm: AppForm) => ({
       ...prevForm,
-      region: e.target.value,
+      city: e.target.value,
     }));
   };
 
   const handleSubmit = () => {
-    setGuideStep(1);
+    setGuideStep(2);
   };
 
   return (
     <div className="SelectCityComponent">
-      <Text mb={2}>Будь-ласка, оберіть область куди ви подорожуєте</Text>
-      {regions && regions.length ? (
+      <Text mb={2}>Будь-ласка, оберіть місто куди ви подорожуєте</Text>
+      {cities && cities.length ? (
         <Select onChange={handleSelectChange} mb={4}>
-          {regions.map((r) => {
-            const region = trimRegionNamespace(r);
+          {cities.map((c) => {
+            const city = trimCityNamespace(c);
             return (
-              <option key={region} value={region}>
-                {region}
+              <option key={city} value={city}>
+                {city}
               </option>
             );
           })}
@@ -45,7 +45,7 @@ export const SelectRegionComponent = () => {
       ) : (
         <Skeleton height="20px" />
       )}
-      <Button disabled={!form.region} onClick={handleSubmit}>
+      <Button disabled={!form.city} onClick={handleSubmit}>
         Обрати
       </Button>
     </div>

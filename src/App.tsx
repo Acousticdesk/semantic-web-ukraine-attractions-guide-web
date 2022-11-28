@@ -1,9 +1,11 @@
 import { GuideStepContext } from "./logic/routing";
 import { FormContext } from "./logic/form";
 import { SelectRegionComponent } from "./steps/SelectRegion.component";
+import { SelectCityComponent } from "./steps/SelectCity.component";
 import { useState } from "react";
 import { Container, Text } from "@chakra-ui/react";
 import { AppForm } from "./logic/interfaces";
+import { SELECT_REGION_INDEX, SELECT_CITY_INDEX } from "./steps/const";
 
 function App() {
   const [guideStep, setGuideStep] = useState(0);
@@ -21,7 +23,8 @@ function App() {
               Для того щоб переглянути рекомендації, будь-ласка, оберіть область
               і місто
             </Text>
-            <SelectRegionComponent />
+            {guideStep === SELECT_REGION_INDEX && <SelectRegionComponent />}
+            {guideStep === SELECT_CITY_INDEX && <SelectCityComponent />}
           </div>
         </Container>
       </FormContext.Provider>
