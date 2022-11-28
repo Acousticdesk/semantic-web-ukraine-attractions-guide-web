@@ -1,5 +1,5 @@
 import { GuideStepContext } from "./logic/routing";
-import { FormContext } from "./logic/form";
+import { FormContext, initialFormValues } from "./logic/form";
 import { SelectRegionComponent } from "./steps/SelectRegion.component";
 import { SelectCityComponent } from "./steps/SelectCity.component";
 import { useState } from "react";
@@ -16,7 +16,7 @@ import { ViewAttractionsComponent } from "./steps/ViewAttractions.component";
 
 function App() {
   const [guideStep, setGuideStep] = useState(0);
-  const [form, setForm] = useState({} as AppForm);
+  const [form, setForm] = useState({ ...initialFormValues } as AppForm);
 
   return (
     <GuideStepContext.Provider value={{ guideStep, setGuideStep }}>

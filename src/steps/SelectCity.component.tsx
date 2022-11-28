@@ -28,19 +28,14 @@ export const SelectCityComponent = () => {
     setGuideStep(2);
   };
 
-  const handleSubmitNoCity = () => {
-    setForm((prevForm: AppForm) => ({
-      ...prevForm,
-      city: "",
-    }));
-    setGuideStep(2);
-  };
-
   return (
     <div className="SelectCityComponent">
       <Text mb={2}>Будь-ласка, оберіть місто куди ви подорожуєте</Text>
       {cities && cities.length ? (
         <Select onChange={handleSelectChange} mb={4}>
+          <option selected value="">
+            Вся область
+          </option>
           {cities.map((c) => {
             const city = trimCityNamespace(c);
             return (
@@ -54,12 +49,7 @@ export const SelectCityComponent = () => {
         <Spinner />
       )}
       <div>
-        <Button disabled={!form.city} onClick={handleSubmit}>
-          Обрати
-        </Button>
-        <Button mx={2} onClick={handleSubmitNoCity}>
-          Вся область
-        </Button>
+        <Button onClick={handleSubmit}>Обрати</Button>
       </div>
     </div>
   );

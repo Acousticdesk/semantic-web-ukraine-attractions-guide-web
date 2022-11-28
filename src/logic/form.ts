@@ -8,3 +8,8 @@ export const FormContext = createContext<{
   form: {} as AppForm,
   setForm: (form: (prevForm: AppForm) => AppForm) => {},
 });
+
+export const initialFormValues = {
+  region: "Kyiv_Oblast",
+  city: "",
+};

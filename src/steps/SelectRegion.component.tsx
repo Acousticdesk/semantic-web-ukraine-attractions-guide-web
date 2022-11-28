@@ -3,7 +3,7 @@ import { useEffect, useState, useContext, ChangeEvent } from "react";
 import { GuideStepContext } from "../logic/routing";
 import { API_BASE_URL } from "../const";
 import { trimRegionNamespace } from "../regions/utils";
-import { FormContext } from "../logic/form";
+import { FormContext, initialFormValues } from "../logic/form";
 import { AppForm } from "../logic/interfaces";
 
 export const SelectRegionComponent = () => {
@@ -36,7 +36,11 @@ export const SelectRegionComponent = () => {
           {regions.map((r) => {
             const region = trimRegionNamespace(r);
             return (
-              <option key={region} value={region}>
+              <option
+                selected={region === initialFormValues.region}
+                key={region}
+                value={region}
+              >
                 {region}
               </option>
             );

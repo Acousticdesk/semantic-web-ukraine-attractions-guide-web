@@ -28,11 +28,20 @@ export const ViewAttractionsComponent = () => {
   const { form } = useContext(FormContext);
 
   useEffect(() => {
-    const url = form.city
-      ? `${API_BASE_URL}/cities/${form.city}/attractions`
-      : `${API_BASE_URL}/regions/${form.region}/attractions`;
+    let url = `${API_BASE_URL}/regions/${form.region}/attractions?`;
 
-    fetch(form.category ? url + `?category=${form.category}` : url)
+    const params = {
+      city: form.city,
+      category: form.category,
+    };
+
+    Object.entries(params).forEach(([key, value]) => {
+      if (value) {
+        url += url.split("?")[1] ? `&${key}=${value}` : `${key}=${value}`;
+      }
+    });
+
+    fetch(url)
       .then((r) => r.json())
       .then(setAttractions);
   }, []);
