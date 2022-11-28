@@ -1,4 +1,4 @@
-import { Select, Text, Skeleton, Button } from "@chakra-ui/react";
+import { Select, Text, Spinner, Button } from "@chakra-ui/react";
 import { useEffect, useState, useContext, ChangeEvent } from "react";
 import { GuideStepContext } from "../logic/routing";
 import { API_BASE_URL } from "../const";
@@ -43,11 +43,13 @@ export const SelectRegionComponent = () => {
           })}
         </Select>
       ) : (
-        <Skeleton height="20px" />
+        <Spinner />
       )}
-      <Button disabled={!form.region} onClick={handleSubmit}>
-        Обрати
-      </Button>
+      <div>
+        <Button disabled={!form.region} onClick={handleSubmit}>
+          Обрати
+        </Button>
+      </div>
     </div>
   );
 };

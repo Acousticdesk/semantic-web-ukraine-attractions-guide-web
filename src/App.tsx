@@ -9,8 +9,10 @@ import {
   SELECT_REGION_INDEX,
   SELECT_CITY_INDEX,
   SELECT_CATEGORY_INDEX,
+  VIEW_ATTRACTIONS_INDEX,
 } from "./steps/const";
 import { SelectCategoryComponent } from "./steps/SelectCategory.component";
+import { ViewAttractionsComponent } from "./steps/ViewAttractions.component";
 
 function App() {
   const [guideStep, setGuideStep] = useState(0);
@@ -31,6 +33,9 @@ function App() {
             {guideStep === SELECT_REGION_INDEX && <SelectRegionComponent />}
             {guideStep === SELECT_CITY_INDEX && <SelectCityComponent />}
             {guideStep === SELECT_CATEGORY_INDEX && <SelectCategoryComponent />}
+            {guideStep === VIEW_ATTRACTIONS_INDEX && (
+              <ViewAttractionsComponent />
+            )}
           </div>
         </Container>
       </FormContext.Provider>

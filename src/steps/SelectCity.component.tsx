@@ -1,4 +1,4 @@
-import { Select, Text, Skeleton, Button } from "@chakra-ui/react";
+import { Select, Text, Spinner, Button } from "@chakra-ui/react";
 import { useEffect, useState, useContext, ChangeEvent } from "react";
 import { GuideStepContext } from "../logic/routing";
 import { API_BASE_URL } from "../const";
@@ -28,6 +28,14 @@ export const SelectCityComponent = () => {
     setGuideStep(2);
   };
 
+  const handleSubmitNoCity = () => {
+    setForm((prevForm: AppForm) => ({
+      ...prevForm,
+      city: "",
+    }));
+    setGuideStep(2);
+  };
+
   return (
     <div className="SelectCityComponent">
       <Text mb={2}>Будь-ласка, оберіть місто куди ви подорожуєте</Text>
@@ -43,11 +51,16 @@ export const SelectCityComponent = () => {
           })}
         </Select>
       ) : (
-        <Skeleton height="20px" />
+        <Spinner />
       )}
-      <Button disabled={!form.city} onClick={handleSubmit}>
-        Обрати
-      </Button>
+      <div>
+        <Button disabled={!form.city} onClick={handleSubmit}>
+          Обрати
+        </Button>
+        <Button mx={2} onClick={handleSubmitNoCity}>
+          Вся область
+        </Button>
+      </div>
     </div>
   );
 };

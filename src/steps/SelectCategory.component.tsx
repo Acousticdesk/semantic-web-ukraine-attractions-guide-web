@@ -1,4 +1,4 @@
-import { Select, Text, Skeleton, Button } from "@chakra-ui/react";
+import { Select, Text, Spinner, Button } from "@chakra-ui/react";
 import { useEffect, useState, useContext, ChangeEvent } from "react";
 import { GuideStepContext } from "../logic/routing";
 import { API_BASE_URL } from "../const";
@@ -33,7 +33,9 @@ export const SelectCategoryComponent = () => {
       <Text mb={2}>Будь-ласка, оберіть чим саме ви цікавитеся</Text>
       {categories && categories.length ? (
         <Select onChange={handleSelectChange} mb={4}>
-          <option value="">Мене цікавлять всі рекомендації</option>
+          <option selected value="">
+            Мене цікавлять всі рекомендації
+          </option>
           {categories.map((c) => {
             const category = trimCategoryNamespace(c);
             return (
@@ -44,9 +46,11 @@ export const SelectCategoryComponent = () => {
           })}
         </Select>
       ) : (
-        <Skeleton height="20px" />
+        <Spinner />
       )}
-      <Button onClick={handleSubmit}>Обрати</Button>
+      <div>
+        <Button onClick={handleSubmit}>Обрати</Button>
+      </div>
     </div>
   );
 };
