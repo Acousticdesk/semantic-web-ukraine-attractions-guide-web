@@ -7,14 +7,18 @@ import { FormContext, initialFormValues } from "../logic/form";
 import { AppForm } from "../logic/interfaces";
 
 export const SelectRegionComponent = () => {
-  const [regions, setRegions] = useState([]);
+  const [regions, setRegions] = useState<string[]>([]);
+  const [regionLabels, setRegionLabels] = useState<string[]>([]);
   const { form, setForm } = useContext(FormContext);
   const { setGuideStep } = useContext(GuideStepContext);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/regions`)
       .then((r) => r.json())
-      .then(setRegions);
+      .then(({ values, labels }) => {
+        setRegions(values);
+        setRegionLabels(labels);
+      });
   }, []);
 
   const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -32,16 +36,16 @@ export const SelectRegionComponent = () => {
     <div className="SelectCityComponent">
       <Text mb={2}>Будь-ласка, оберіть область куди ви подорожуєте</Text>
       {regions && regions.length ? (
-        <Select onChange={handleSelectChange} mb={4}>
-          {regions.map((r) => {
+        <Select
+          defaultValue={initialFormValues.region}
+          onChange={handleSelectChange}
+          mb={4}
+        >
+          {regions.map((r, index) => {
             const region = trimRegionNamespace(r);
             return (
-              <option
-                selected={region === initialFormValues.region}
-                key={region}
-                value={region}
-              >
-                {region}
+              <option key={region} value={region}>
+                {regionLabels[index]}
               </option>
             );
           })}

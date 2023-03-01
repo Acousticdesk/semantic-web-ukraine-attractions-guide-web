@@ -32,10 +32,8 @@ export const SelectCategoryComponent = () => {
     <div className="SelectCategoryComponent">
       <Text mb={2}>Будь-ласка, оберіть чим саме ви цікавитеся</Text>
       {categories && categories.length ? (
-        <Select onChange={handleSelectChange} mb={4}>
-          <option selected value="">
-            Мене цікавлять всі рекомендації
-          </option>
+        <Select defaultValue="" onChange={handleSelectChange} mb={4}>
+          <option value="">Мене цікавлять всі рекомендації</option>
           {categories.map((c) => {
             const category = trimCategoryNamespace(c);
             return (

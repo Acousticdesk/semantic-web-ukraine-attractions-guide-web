@@ -8,13 +8,17 @@ import { trimCityNamespace } from "../cities/utils";
 
 export const SelectCityComponent = () => {
   const [cities, setCities] = useState([]);
+  const [cityLabels, setCityLabels] = useState([]);
   const { form, setForm } = useContext(FormContext);
   const { setGuideStep } = useContext(GuideStepContext);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/regions/${form.region}/cities`)
       .then((r) => r.json())
-      .then(setCities);
+      .then(({ values, labels }) => {
+        setCities(values);
+        setCityLabels(labels);
+      });
   }, []);
 
   const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -32,15 +36,13 @@ export const SelectCityComponent = () => {
     <div className="SelectCityComponent">
       <Text mb={2}>Будь-ласка, оберіть місто куди ви подорожуєте</Text>
       {cities && cities.length ? (
-        <Select onChange={handleSelectChange} mb={4}>
-          <option selected value="">
-            Вся область
-          </option>
-          {cities.map((c) => {
+        <Select defaultValue="" onChange={handleSelectChange} mb={4}>
+          <option>Вся область</option>
+          {cities.map((c, index) => {
             const city = trimCityNamespace(c);
             return (
               <option key={city} value={city}>
-                {city}
+                {cityLabels[index]}
               </option>
             );
           })}
