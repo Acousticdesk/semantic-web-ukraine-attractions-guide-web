@@ -13,9 +13,10 @@ import {
   Box,
   SimpleGrid,
 } from "@chakra-ui/react";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, ChangeEvent } from "react";
 import { API_BASE_URL } from "../const";
 import { FormContext } from "../logic/form";
+import noImage from "../assets/images/no-img.png";
 
 interface Attraction {
   thumbnail: string;
@@ -55,6 +56,24 @@ export const ViewAttractionsComponent = () => {
     window.location.reload();
   };
 
+  function handleMissingImage(e: ChangeEvent<HTMLImageElement>) {
+    e.target.src = noImage;
+  }
+
+  function handleReadMoreClick(e: React.MouseEvent<HTMLButtonElement>) {
+    // @ts-ignore
+    const description = e.target.parentElement?.querySelector(".description");
+
+    if (!description) {
+      return;
+    }
+
+    description.style.whiteSpace = "unset";
+
+    // @ts-ignore
+    e.target.parentElement.removeChild(e.target);
+  }
+
   return (
     <div className="SelectCategoryComponent">
       <Box my={8}>
@@ -68,10 +87,23 @@ export const ViewAttractionsComponent = () => {
             return (
               <Card key={label}>
                 <CardBody>
-                  <Image src={thumbnail} alt={label} borderRadius="lg" />
+                  <Image
+                    onError={handleMissingImage}
+                    src={thumbnail}
+                    alt={label}
+                    borderRadius="lg"
+                  />
                   <Stack mt="6" spacing="3">
                     <Heading size="md">{label}</Heading>
-                    <Text>{description}</Text>
+                    <Text
+                      className="description"
+                      whiteSpace="nowrap"
+                      overflow="hidden"
+                      textOverflow="ellipsis"
+                    >
+                      {description}
+                    </Text>
+                    <Button onClick={handleReadMoreClick}>Читати далі</Button>
                   </Stack>
                 </CardBody>
                 <Divider />
@@ -93,7 +125,7 @@ export const ViewAttractionsComponent = () => {
                     >
                       Більше Інформації
                     </Button>
-                    <div hidden id={`details_${label}`}>
+                    <Box wordBreak="break-word" hidden id={`details_${label}`}>
                       <ul>
                         {details &&
                           details.length &&
@@ -105,7 +137,7 @@ export const ViewAttractionsComponent = () => {
                             </li>
                           ))}
                       </ul>
-                    </div>
+                    </Box>
                   </ButtonGroup>
                 </CardFooter>
               </Card>
