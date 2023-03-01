@@ -13,6 +13,7 @@ import {
   Box,
   SimpleGrid,
   Flex,
+  Link,
 } from "@chakra-ui/react";
 import { useEffect, useState, useContext, ChangeEvent } from "react";
 import { API_BASE_URL } from "../const";
@@ -26,6 +27,8 @@ interface Attraction {
   label: string;
   details: string[];
   description: string;
+  longtitude: string;
+  latitude: string;
 }
 
 export const ViewAttractionsComponent = () => {
@@ -98,7 +101,10 @@ export const ViewAttractionsComponent = () => {
       {attractions && attractions.length && !isLoading ? (
         <SimpleGrid columns={3} spacing={10}>
           {attractions.map(
-            ({ thumbnail, label, description, details }, index) => {
+            (
+              { thumbnail, label, description, details, longtitude, latitude },
+              index
+            ) => {
               return (
                 <Card key={index}>
                   <CardBody>
@@ -127,6 +133,7 @@ export const ViewAttractionsComponent = () => {
                       <Button
                         variant="ghost"
                         colorScheme="blue"
+                        mr={4}
                         onClick={(e) => {
                           (e.target as HTMLButtonElement).hidden = true;
                           const element = document.getElementById(
@@ -136,10 +143,28 @@ export const ViewAttractionsComponent = () => {
                           if (element) {
                             element.removeAttribute("hidden");
                           }
+
+                          const mapsButtonElement = document.getElementById(
+                            `map_${label}`
+                          );
+
+                          if (mapsButtonElement) {
+                            mapsButtonElement.setAttribute("hidden", "hidden");
+                          }
                         }}
                       >
                         Більше Інформації
                       </Button>
+                      {longtitude && latitude && (
+                        <Box id={`map_${label}`}>
+                          <Link
+                            href={`https://maps.google.com/?q=${latitude},${longtitude}`}
+                            target="_blank"
+                          >
+                            Показати на карті
+                          </Link>
+                        </Box>
+                      )}
                       <Box
                         wordBreak="break-word"
                         hidden
