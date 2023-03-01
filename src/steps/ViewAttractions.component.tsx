@@ -98,7 +98,18 @@ export const ViewAttractionsComponent = () => {
 
       <Text mb={2}>Рекомендації щодо обраних Вами критеріїв:</Text>
       {isLoading && <Spinner />}
-      {attractions && attractions.length && !isLoading ? (
+      {(!attractions || !attractions.length) && !isLoading && (
+        <>
+          <Text>
+            Вибачте, таких місць ми не змогли знайти, спробуйте використати інші
+            параметри пошуку
+          </Text>
+          <Box my={8}>
+            <Button onClick={handleFinalize}>Почати Спочатку</Button>
+          </Box>
+        </>
+      )}
+      {attractions && Boolean(attractions.length) && !isLoading && (
         <SimpleGrid columns={3} spacing={10}>
           {attractions.map(
             (
@@ -189,16 +200,6 @@ export const ViewAttractionsComponent = () => {
             }
           )}
         </SimpleGrid>
-      ) : (
-        <>
-          <Text>
-            Вибачте, таких місць ми не змогли знайти, спробуйте використати інші
-            параметри пошуку
-          </Text>
-          <Box my={8}>
-            <Button onClick={handleFinalize}>Почати Спочатку</Button>
-          </Box>
-        </>
       )}
     </div>
   );
