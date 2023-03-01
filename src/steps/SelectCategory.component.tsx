@@ -56,9 +56,8 @@ export const SelectCategoryComponent = () => {
         <Select defaultValue="" onChange={handleSelectChange} mb={4}>
           <option value="">Мене цікавлять всі рекомендації</option>
           {categories.map((c) => {
-            const category = trimCategoryNamespace(c);
             return (
-              <option key={category} value={category}>
+              <option key={c} value={c}>
                 {translateCategory(c)}
               </option>
             );

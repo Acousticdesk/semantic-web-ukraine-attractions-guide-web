@@ -12,11 +12,14 @@ import {
   ButtonGroup,
   Box,
   SimpleGrid,
+  Flex,
 } from "@chakra-ui/react";
 import { useEffect, useState, useContext, ChangeEvent } from "react";
 import { API_BASE_URL } from "../const";
 import { FormContext } from "../logic/form";
 import noImage from "../assets/images/no-img.png";
+import { SELECT_CATEGORY_INDEX } from "./const";
+import { GuideStepContext } from "../logic/routing";
 
 interface Attraction {
   thumbnail: string;
@@ -29,6 +32,7 @@ export const ViewAttractionsComponent = () => {
   const [attractions, setAttractions] = useState<Attraction[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { form } = useContext(FormContext);
+  const { setGuideStep } = useContext(GuideStepContext);
 
   useEffect(() => {
     let url = `${API_BASE_URL}/regions/${form.region}/attractions?`;
@@ -76,12 +80,22 @@ export const ViewAttractionsComponent = () => {
 
   return (
     <div className="SelectCategoryComponent">
-      <Box my={8}>
-        <Button onClick={handleFinalize}>Почати Спочатку</Button>
-      </Box>
+      <Flex>
+        <Button
+          my={8}
+          mr={2}
+          onClick={() => setGuideStep(SELECT_CATEGORY_INDEX)}
+        >
+          Повернутись Назад
+        </Button>
+        <Box my={8}>
+          <Button onClick={handleFinalize}>Почати Спочатку</Button>
+        </Box>
+      </Flex>
+
       <Text mb={2}>Рекомендації щодо обраних Вами критеріїв:</Text>
       {isLoading && <Spinner />}
-      {attractions && attractions.length ? (
+      {attractions && attractions.length && !isLoading ? (
         <SimpleGrid columns={3} spacing={10}>
           {attractions.map(
             ({ thumbnail, label, description, details }, index) => {
