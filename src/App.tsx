@@ -21,7 +21,7 @@ function App() {
   return (
     <GuideStepContext.Provider value={{ guideStep, setGuideStep }}>
       <FormContext.Provider value={{ form, setForm }}>
-        <Container>
+        <Container maxW="container.xl">
           <div className="App">
             <Text fontSize="5xl" mb={8}>
               Провідник по місцям України 🇺🇦

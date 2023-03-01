@@ -11,6 +11,7 @@ import {
   CardFooter,
   ButtonGroup,
   Box,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
 import { API_BASE_URL } from "../const";
@@ -25,6 +26,7 @@ interface Attraction {
 
 export const ViewAttractionsComponent = () => {
   const [attractions, setAttractions] = useState<Attraction[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { form } = useContext(FormContext);
 
   useEffect(() => {
@@ -41,9 +43,12 @@ export const ViewAttractionsComponent = () => {
       }
     });
 
+    setIsLoading(true);
+
     fetch(url)
       .then((r) => r.json())
-      .then(setAttractions);
+      .then(setAttractions)
+      .finally(() => setIsLoading(false));
   }, []);
 
   const handleFinalize = () => {
@@ -52,9 +57,13 @@ export const ViewAttractionsComponent = () => {
 
   return (
     <div className="SelectCategoryComponent">
+      <Box my={8}>
+        <Button onClick={handleFinalize}>Почати Спочатку</Button>
+      </Box>
       <Text mb={2}>Рекомендації щодо обраних Вами критеріїв:</Text>
+      {isLoading && <Spinner />}
       {attractions && attractions.length ? (
-        <Box>
+        <SimpleGrid columns={3} spacing={10}>
           {attractions.map(({ thumbnail, label, description, details }) => {
             return (
               <Card key={label}>
@@ -102,13 +111,18 @@ export const ViewAttractionsComponent = () => {
               </Card>
             );
           })}
-        </Box>
+        </SimpleGrid>
       ) : (
-        <Spinner />
+        <>
+          <Text>
+            Вибачте, таких місць ми не змогли знайти, спробуйте використати інші
+            параметри пошуку
+          </Text>
+          <Box my={8}>
+            <Button onClick={handleFinalize}>Почати Спочатку</Button>
+          </Box>
+        </>
       )}
-      <Box mt={8}>
-        <Button onClick={handleFinalize}>Спочатку</Button>
-      </Box>
     </div>
   );
 };
