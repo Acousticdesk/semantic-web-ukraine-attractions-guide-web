@@ -83,66 +83,72 @@ export const ViewAttractionsComponent = () => {
       {isLoading && <Spinner />}
       {attractions && attractions.length ? (
         <SimpleGrid columns={3} spacing={10}>
-          {attractions.map(({ thumbnail, label, description, details }) => {
-            return (
-              <Card key={label}>
-                <CardBody>
-                  <Image
-                    onError={handleMissingImage}
-                    src={thumbnail}
-                    alt={label}
-                    borderRadius="lg"
-                  />
-                  <Stack mt="6" spacing="3">
-                    <Heading size="md">{label}</Heading>
-                    <Text
-                      className="description"
-                      whiteSpace="nowrap"
-                      overflow="hidden"
-                      textOverflow="ellipsis"
-                    >
-                      {description}
-                    </Text>
-                    <Button onClick={handleReadMoreClick}>Читати далі</Button>
-                  </Stack>
-                </CardBody>
-                <Divider />
-                <CardFooter>
-                  <ButtonGroup spacing="2">
-                    <Button
-                      variant="ghost"
-                      colorScheme="blue"
-                      onClick={(e) => {
-                        (e.target as HTMLButtonElement).hidden = true;
-                        const element = document.getElementById(
-                          `details_${label}`
-                        );
+          {attractions.map(
+            ({ thumbnail, label, description, details }, index) => {
+              return (
+                <Card key={index}>
+                  <CardBody>
+                    <Image
+                      onError={handleMissingImage}
+                      src={thumbnail}
+                      alt={label}
+                      borderRadius="lg"
+                    />
+                    <Stack mt="6" spacing="3">
+                      <Heading size="md">{label}</Heading>
+                      <Text
+                        className="description"
+                        whiteSpace="nowrap"
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                      >
+                        {description}
+                      </Text>
+                      <Button onClick={handleReadMoreClick}>Читати далі</Button>
+                    </Stack>
+                  </CardBody>
+                  <Divider />
+                  <CardFooter>
+                    <ButtonGroup spacing="2">
+                      <Button
+                        variant="ghost"
+                        colorScheme="blue"
+                        onClick={(e) => {
+                          (e.target as HTMLButtonElement).hidden = true;
+                          const element = document.getElementById(
+                            `details_${label}`
+                          );
 
-                        if (element) {
-                          element.removeAttribute("hidden");
-                        }
-                      }}
-                    >
-                      Більше Інформації
-                    </Button>
-                    <Box wordBreak="break-word" hidden id={`details_${label}`}>
-                      <ul>
-                        {details &&
-                          details.length &&
-                          details.map((d) => (
-                            <li>
-                              <a href={d} key={d} target="_blank">
-                                {d}
-                              </a>
-                            </li>
-                          ))}
-                      </ul>
-                    </Box>
-                  </ButtonGroup>
-                </CardFooter>
-              </Card>
-            );
-          })}
+                          if (element) {
+                            element.removeAttribute("hidden");
+                          }
+                        }}
+                      >
+                        Більше Інформації
+                      </Button>
+                      <Box
+                        wordBreak="break-word"
+                        hidden
+                        id={`details_${label}`}
+                      >
+                        <ul>
+                          {details &&
+                            details.length &&
+                            details.map((d, index) => (
+                              <li key={index}>
+                                <a href={d} target="_blank">
+                                  {d}
+                                </a>
+                              </li>
+                            ))}
+                        </ul>
+                      </Box>
+                    </ButtonGroup>
+                  </CardFooter>
+                </Card>
+              );
+            }
+          )}
         </SimpleGrid>
       ) : (
         <>
